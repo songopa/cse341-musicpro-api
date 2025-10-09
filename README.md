@@ -72,5 +72,5 @@ If you want integration tests against a real MongoDB, set up a test database and
 ## Notes about authentication & authorization
 
 - The app uses `express-openid-connect` (see `config/auth.js`) — you must fill real auth environment variables in `.env` to enable real login flows.
-- `middleware/authz.js` contains simple `requireAuth` and `requireAdmin` stubs. Adapt authorization to your identity provider's claim structure (roles, groups, etc.).
+
 
