@@ -1,4 +1,3 @@
-const { auth } = require('express-openid-connect');
 
 module.exports = {
     authRequired: false,

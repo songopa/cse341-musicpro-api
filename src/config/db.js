@@ -3,10 +3,15 @@ let db;
 
 async function connectToDb() {
     if (db) return db;
-    const client = new MongoClient(process.env.MONGODB_URI);
+    const uri = process.env.MONGODB_URI;
+    if (!uri || typeof uri !== 'string') {
+        throw new Error('MONGODB_URI is not set or invalid. Please set MONGODB_URI in your environment.');
+    }
+    const client = new MongoClient(uri);
     await client.connect();
-    db = client.db();
-    console.log('Connected to MongoDB');
+    const dbName = process.env.MONGODB_NAME || undefined;
+    db = dbName ? client.db(dbName) : client.db();
+    console.log('Connected to MongoDB:', db.databaseName);
     return db;
 }
 

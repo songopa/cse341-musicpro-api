@@ -1,9 +1,9 @@
 const express = require('express');
-const dotenv = require('dotenv');
+require('dotenv').config();
 const { auth } = require('express-openid-connect');
 const path = require('path');
+const { connectToDb } = require('./config/db');
 
-dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 app.use(express.json());
@@ -32,17 +32,17 @@ app.use('/albums', require('./routes/albums'));
 app.use('/reviews', require('./routes/reviews'));
 app.use('/api-docs', require('./routes/swagger'));
 
-// error handler
-const errorHandler = require('./middleware/errorHandler');
-app.use(errorHandler);
 
-const db = require('./config/db');
 // Connect to DB unless running tests (tests mock DB operations)
 if (process.env.NODE_ENV !== 'test') {
-    db.connectToDb().catch(err => console.error('DB connect error', err));
+    connectToDb().catch(err => console.error('DB connect error', err));
 }
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// error handler
+const errorHandler = require('./middleware/errorHandler');
+app.use(errorHandler);
 
 module.exports = app; 
