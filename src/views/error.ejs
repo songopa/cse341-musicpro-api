@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - MusicPro API</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Error</h1>
+        <p>
+            <%= message || 'An unexpected error occurred.' %>
+        </p>
+        <% if (error && error.status) { %>
+            <p>Status: <%= error.status %>
+            </p>
+            <% } %>
+                <a class="button" href="/">Return Home</a>
+    </div>
+</body>
+
+</html>

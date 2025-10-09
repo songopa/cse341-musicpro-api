@@ -1,0 +1,5 @@
+openapi: 3.0.0
+info:
+  title: MusicPro API
+  description: API for managing music albums, genres, and reviews.
+  version: 1.0.0

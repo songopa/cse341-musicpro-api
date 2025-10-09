@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> MusicPro API</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to MusicPro API</h1>
+        <p>This is a modern Node.js API for Music management.</p>
+        <div>
+            <% if (user) { %>
+                <p>Hello, <strong>
+                        <%= user.name || user.email %>
+                    </strong>! You have successfully logged in.</p>
+                <% } else { %>
+                        <p>Please <a class="button" href="/login">Log In</a> for full editing access</p>
+            <% } %>
+        </div>
+        <a class="button" href="/api-docs">View API Docs</a>
+    </div>
+</body>
+
+</html>
