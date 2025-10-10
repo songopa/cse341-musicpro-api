@@ -5,7 +5,7 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 90%;
     margin: 60px auto;
     background: #fff;
     border-radius: 12px;
@@ -15,7 +15,7 @@ body {
 }
 
 h1 {
-    color: #1976d2;
+    color: #006080;
     margin-bottom: 16px;
 }
 
@@ -26,7 +26,7 @@ p {
 
 a.button, button {
     display: inline-block;
-    background: #1976d2;
+    background: #006090;
     color: #fff;
     padding: 12px 32px;
     border-radius: 6px;
@@ -37,7 +37,7 @@ a.button, button {
 }
 
 a.button:hover, button:hover {
-    background: #1565c0;
+    background: #007080;
 }
 
 .links {
@@ -68,4 +68,7 @@ a.button:hover, button:hover {
 
 .bg-danger {
     background: red !important;
+}
+.text-bold {
+    font-weight: 700;
 }
