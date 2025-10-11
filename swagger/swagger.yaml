@@ -1,5 +1,523 @@
 openapi: 3.0.0
 info:
   title: MusicPro API
-  description: API for managing music albums, genres, and reviews.
+  description: API for managing music albums, genres, artists, labels, and reviews with OAuth authentication.
   version: 1.0.0
+servers:
+  - url: https://musicpro-api.onrender.com
+    description: Production server
+  - url: http://localhost:3000
+    description: Development server
+
+components:
+  securitySchemes:
+    Auth0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://dev-v5cfj1gszxaoe8zu.us.auth0.com/authorize
+          tokenUrl: https://dev-v5cfj1gszxaoe8zu.us.auth0.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+
+  schemas:
+    Genre:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439011"
+        name:
+          type: string
+          example: "Electronic Dance Music"
+        description:
+          type: string
+          example: "High-energy electronic music designed for dancing"
+        originDecade:
+          type: string
+          example: "1980s"
+        parentGenre:
+          type: string
+          example: "Electronic"
+        characteristics:
+          type: array
+          items:
+            type: string
+          example: ["Synthesizers", "Heavy bass", "Repetitive beats"]
+        popularArtists:
+          type: array
+          items:
+            type: string
+          example: ["Daft Punk", "Calvin Harris", "Deadmau5"]
+        subgenres:
+          type: array
+          items:
+            type: string
+          example: ["House", "Techno", "Dubstep"]
+        popularityScore:
+          type: integer
+          example: 85
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GenreInput:
+      type: object
+      required:
+        - name
+        - description
+        - originDecade
+        - parentGenre
+        - characteristics
+        - popularArtists
+        - subgenres
+        - popularityScore
+      properties:
+        name:
+          type: string
+          example: "Electronic Dance Music"
+        description:
+          type: string
+          example: "High-energy electronic music designed for dancing"
+        originDecade:
+          type: string
+          example: "1980s"
+        parentGenre:
+          type: string
+          example: "Electronic"
+        characteristics:
+          type: array
+          items:
+            type: string
+          example: ["Synthesizers", "Heavy bass", "Repetitive beats"]
+        popularArtists:
+          type: array
+          items:
+            type: string
+          example: ["Daft Punk", "Calvin Harris", "Deadmau5"]
+        subgenres:
+          type: array
+          items:
+            type: string
+          example: ["House", "Techno", "Dubstep"]
+        popularityScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 85
+
+    Artist:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439012"
+        name:
+          type: string
+          example: "The Beatles"
+        genre:
+          type: string
+          example: "Rock"
+        country:
+          type: string
+          example: "United Kingdom"
+        formedYear:
+          type: integer
+          example: 1960
+        members:
+          type: array
+          items:
+            type: string
+          example: ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"]
+        activeYears:
+          type: string
+          example: "1960-1970"
+        recordLabel:
+          type: string
+          example: "Apple Records"
+        popularSongs:
+          type: array
+          items:
+            type: string
+          example: ["Hey Jude", "Let It Be", "Yesterday"]
+        socialMedia:
+          type: object
+          example: {"website": "https://thebeatles.com", "instagram": "@thebeatles"}
+        biography:
+          type: string
+          example: "The Beatles were an English rock band formed in Liverpool in 1960."
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ArtistInput:
+      type: object
+      required:
+        - name
+        - genre
+        - country
+        - formedYear
+        - members
+        - activeYears
+        - recordLabel
+        - popularSongs
+        - socialMedia
+        - biography
+      properties:
+        name:
+          type: string
+          example: "The Beatles"
+        genre:
+          type: string
+          example: "Rock"
+        country:
+          type: string
+          example: "United Kingdom"
+        formedYear:
+          type: integer
+          example: 1960
+        members:
+          type: array
+          items:
+            type: string
+          example: ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"]
+        activeYears:
+          type: string
+          example: "1960-1970"
+        recordLabel:
+          type: string
+          example: "Apple Records"
+        popularSongs:
+          type: array
+          items:
+            type: string
+          example: ["Hey Jude", "Let It Be", "Yesterday"]
+        socialMedia:
+          type: object
+          example: {"website": "https://thebeatles.com", "instagram": "@thebeatles"}
+        biography:
+          type: string
+          example: "The Beatles were an English rock band formed in Liverpool in 1960."
+
+paths:
+  /genres:
+    get:
+      summary: Get all genres
+      description: Retrieve a list of all music genres with pagination
+      tags:
+        - Genres
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Genres retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Genre'
+                  pagination:
+                    type: object
+                    properties:
+                      currentPage:
+                        type: integer
+                      totalPages:
+                        type: integer
+                      totalItems:
+                        type: integer
+        '500':
+          description: Server error
+
+    post:
+      summary: Create a new genre
+      description: Create a new music genre (requires authentication)
+      tags:
+        - Genres
+      security:
+        - Auth0: [openid]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenreInput'
+      responses:
+        '201':
+          description: Genre created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Genre created successfully"
+                  data:
+                    $ref: '#/components/schemas/Genre'
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+
+  /genres/{id}:
+    get:
+      summary: Get genre by ID
+      description: Retrieve a specific genre by its ID
+      tags:
+        - Genres
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Genre ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Genre retrieved successfully"
+                  data:
+                    $ref: '#/components/schemas/Genre'
+        '400':
+          description: Invalid ID format
+        '404':
+          description: Genre not found
+
+    put:
+      summary: Update genre
+      description: Update an existing genre (requires authentication)
+      tags:
+        - Genres
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Genre ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenreInput'
+      responses:
+        '200':
+          description: Genre updated successfully
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '404':
+          description: Genre not found
+
+    delete:
+      summary: Delete genre
+      description: Delete a genre (requires authentication)
+      tags:
+        - Genres
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Genre ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Genre deleted successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Genre not found
+
+  /artists:
+    get:
+      summary: Get all artists
+      description: Retrieve a list of all artists with pagination
+      tags:
+        - Artists
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Artists retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Artist'
+                  pagination:
+                    type: object
+
+    post:
+      summary: Create a new artist
+      description: Create a new artist (requires authentication)
+      tags:
+        - Artists
+      security:
+        - Auth0: [openid]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtistInput'
+      responses:
+        '201':
+          description: Artist created successfully
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+
+  /artists/{id}:
+    get:
+      summary: Get artist by ID
+      description: Retrieve a specific artist by their ID
+      tags:
+        - Artists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Artist ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Artist retrieved successfully"
+                  data:
+                    $ref: '#/components/schemas/Artist'
+        '400':
+          description: Invalid ID format
+        '404':
+          description: Artist not found
+
+    put:
+      summary: Update artist
+      description: Update an existing artist (requires authentication)
+      tags:
+        - Artists
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Artist ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtistInput'
+      responses:
+        '200':
+          description: Artist updated successfully
+        '400':
+          description: Validation error
+        '401':
+          description: Authentication required
+        '404':
+          description: Artist not found
+
+    delete:
+      summary: Delete artist
+      description: Delete an artist (requires authentication)
+      tags:
+        - Artists
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Artist ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Artist deleted successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Artist not found
