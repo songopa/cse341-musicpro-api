@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 app.use('/auth', require('./routes/auth'));
 app.use('/labels', require('./routes/labels'));
 app.use('/genres', require('./routes/genres'));
+app.use('/artists', require('./routes/artists'));
 app.use('/albums', require('./routes/albums'));
 app.use('/reviews', require('./routes/reviews'));
 app.use('/api-docs', require('./routes/swagger'));
