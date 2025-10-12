@@ -42,6 +42,12 @@ if (process.env.NODE_ENV !== 'test') {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+// Catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 // error handler
 const errorHandler = require('./middleware/errorHandler');
 app.use(errorHandler);
