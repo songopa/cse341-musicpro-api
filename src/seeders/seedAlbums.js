@@ -1,8 +1,9 @@
-async function seedAlbums(db) {
+async function seedAlbums(db, artistIds = []) {
     const albums = [
         {
             title: 'Dawn Over City',
             artist: 'The Early Birds',
+            artistId: artistIds[0] || null,
             releaseYear: 2018,
             genre: 'Indie Rock',
             label: 'Sunrise Records',
@@ -17,6 +18,7 @@ async function seedAlbums(db) {
         {
             title: 'Neon Nights',
             artist: 'Pulse Driver',
+            artistId: artistIds[1] || null,
             releaseYear: 2021,
             genre: 'Synthwave',
             label: 'Neon Beats',

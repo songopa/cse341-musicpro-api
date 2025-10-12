@@ -4,6 +4,7 @@ const seedLabels = require('./seedLabels');
 const seedGenres = require('./seedGenres');
 const seedAlbums = require('./seedAlbums');
 const seedReviews = require('./seedReviews');
+const seedArtists = require('./seedArtists');
 
 /**
  * Models seeders 
@@ -23,8 +24,14 @@ async function run() {
         const genres = await seedGenres(db);
         console.log('Inserted genres:', genres);
 
+        console.log('Seeding artists...');
+        const artists = await seedArtists(db);
+        console.log('Inserted artists:', artists);
+
         console.log('Seeding albums...');
-        const albums = await seedAlbums(db);
+        const artistIds = Object.values(artists || []);
+        // Pass artistIds to associate albums with artists
+        const albums = await seedAlbums(db, artistIds);
         console.log('Inserted albums:', albums);
 
         console.log('Seeding reviews...');
