@@ -14,8 +14,7 @@ components:
     Auth0:
       type: oauth2
       flows:
-        authorizationCode:
-          authorizationUrl: https://dev-v5cfj1gszxaoe8zu.us.auth0.com/authorize
+        clientCredentials:
           tokenUrl: https://dev-v5cfj1gszxaoe8zu.us.auth0.com/oauth/token
           scopes:
             openid: OpenID Connect scope

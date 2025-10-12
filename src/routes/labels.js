@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const labelsController = require('../controllers/labelsController');
-const { requiresAuth } = require('express-openid-connect'); 
+const checkAuth = require('../middleware/checkAuth');
 
 //  (GET)
 router.get('/', labelsController.getAll); 
 router.get('/:id', labelsController.getById);
 
 // (POST, PUT, DELETE) - Auth
-router.post('/', requiresAuth(), labelsController.create); 
-router.put('/:id', requiresAuth(), labelsController.update);
-router.delete('/:id', requiresAuth(), labelsController.remove);
+router.post('/', checkAuth, labelsController.create); 
+router.put('/:id', checkAuth, labelsController.update);
+router.delete('/:id', checkAuth, labelsController.remove);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/genresController');
-const { requiresAuth } = require('express-openid-connect');
+const checkAuth = require('../middleware/checkAuth');
 
 /**
  * Genre Routes - Full CRUD API Endpoints
@@ -207,7 +207,7 @@ router.get('/:id', controller.getGenreById);
  *       500:
  *         description: Internal server error
  */
-router.post('/', requiresAuth(), controller.createGenre);
+router.post('/', checkAuth, controller.createGenre);
 
 /**
  * @swagger
@@ -244,7 +244,7 @@ router.post('/', requiresAuth(), controller.createGenre);
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', requiresAuth(), controller.updateGenre);
+router.put('/:id', checkAuth, controller.updateGenre);
 
 /**
  * @swagger
@@ -273,7 +273,7 @@ router.put('/:id', requiresAuth(), controller.updateGenre);
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', requiresAuth(), controller.deleteGenre);
+router.delete('/:id', checkAuth, controller.deleteGenre);
 
 module.exports = router;
 

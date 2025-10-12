@@ -16,7 +16,7 @@ app.use(auth(authConfig));
 
 // Middleware to make the `user` object available for all views
 app.use(function (req, res, next) {
-    res.locals.user = req.oidc.user;
+    res.locals.user = (req && req.oidc && req.oidc.user) ? req.oidc.user : null;
     next();
 });
 
