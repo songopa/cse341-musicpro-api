@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/artistsController');
-const { requiresAuth } = require('express-openid-connect');
+const checkAuth = require('../middleware/checkAuth');
 
 /**
  * Artist Routes - Full CRUD API Endpoints
@@ -232,7 +232,7 @@ router.get('/:id', controller.getArtistById);
  *       500:
  *         description: Internal server error
  */
-router.post('/', requiresAuth(), controller.createArtist);
+router.post('/', checkAuth, controller.createArtist);
 
 /**
  * @swagger
@@ -269,7 +269,7 @@ router.post('/', requiresAuth(), controller.createArtist);
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', requiresAuth(), controller.updateArtist);
+router.put('/:id', checkAuth, controller.updateArtist);
 
 /**
  * @swagger
@@ -298,6 +298,6 @@ router.put('/:id', requiresAuth(), controller.updateArtist);
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', requiresAuth(), controller.deleteArtist);
+router.delete('/:id', checkAuth, controller.deleteArtist);
 
 module.exports = router;

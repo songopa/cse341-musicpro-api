@@ -16,7 +16,7 @@ app.use(auth(authConfig));
 
 // Middleware to make the `user` object available for all views
 app.use(function (req, res, next) {
-    res.locals.user = req.oidc.user;
+    res.locals.user = (req && req.oidc && req.oidc.user) ? req.oidc.user : null;
     next();
 });
 
@@ -42,6 +42,12 @@ if (process.env.NODE_ENV !== 'test') {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+// Catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 // error handler
 const errorHandler = require('./middleware/errorHandler');
 app.use(errorHandler);
