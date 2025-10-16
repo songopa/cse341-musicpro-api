@@ -12,7 +12,7 @@ const checkAuth = require('../middleware/checkAuth');
 router.get('/', controller.getAllGenres);
 router.get('/:id', controller.getGenreById);
 
-router.post('/',  controller.createGenre);
+router.post('/', checkAuth, controller.createGenre);
 router.put('/:id', checkAuth, controller.updateGenre);
 router.delete('/:id', checkAuth, controller.deleteGenre);
 
