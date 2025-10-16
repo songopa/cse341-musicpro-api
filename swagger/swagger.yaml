@@ -17,8 +17,7 @@ components:
         clientCredentials:
           tokenUrl: https://dev-v5cfj1gszxaoe8zu.us.auth0.com/oauth/token
           scopes:
-            openid: OpenID Connect scope
-
+            auth0:openid: Access to protected resources
   schemas:
     Genre:
       type: object
