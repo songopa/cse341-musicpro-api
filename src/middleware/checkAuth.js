@@ -4,9 +4,11 @@ module.exports = (req, res, next) => {
     if (req && req.oidc && typeof req.oidc.isAuthenticated === 'function' && req.oidc.isAuthenticated()) {
         return next();
     }
-    const err = new Error('Unauthorized, please login to access this resource');
-    err.status = 401;
-    next(err);
-
-    // return res.status(401).json({ error: 'Unauthorized, please login to access this resource' });
+    
+    // Return 401 immediately for unauthenticated requests
+    return res.status(401).json({ 
+        success: false,
+        error: 'Unauthorized', 
+        message: 'Please login to access this resource' 
+    });
 };

@@ -130,7 +130,8 @@ components:
           type: array
           items:
             type: string
-          example: ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"]
+          example:
+            ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"]
         activeYears:
           type: string
           example: "1960-1970"
@@ -144,7 +145,8 @@ components:
           example: ["Hey Jude", "Let It Be", "Yesterday"]
         socialMedia:
           type: object
-          example: {"website": "https://thebeatles.com", "instagram": "@thebeatles"}
+          example:
+            { "website": "https://thebeatles.com", "instagram": "@thebeatles" }
         biography:
           type: string
           example: "The Beatles were an English rock band formed in Liverpool in 1960."
@@ -185,7 +187,8 @@ components:
           type: array
           items:
             type: string
-          example: ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"]
+          example:
+            ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"]
         activeYears:
           type: string
           example: "1960-1970"
@@ -199,7 +202,8 @@ components:
           example: ["Hey Jude", "Let It Be", "Yesterday"]
         socialMedia:
           type: object
-          example: {"website": "https://thebeatles.com", "instagram": "@thebeatles"}
+          example:
+            { "website": "https://thebeatles.com", "instagram": "@thebeatles" }
         biography:
           type: string
           example: "The Beatles were an English rock band formed in Liverpool in 1960."
@@ -225,7 +229,7 @@ paths:
             type: integer
             default: 10
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -241,7 +245,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Genre'
+                      $ref: "#/components/schemas/Genre"
                   pagination:
                     type: object
                     properties:
@@ -251,7 +255,7 @@ paths:
                         type: integer
                       totalItems:
                         type: integer
-        '500':
+        "500":
           description: Server error
 
     post:
@@ -266,9 +270,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GenreInput'
+              $ref: "#/components/schemas/GenreInput"
       responses:
-        '201':
+        "201":
           description: Genre created successfully
           content:
             application/json:
@@ -282,10 +286,10 @@ paths:
                     type: string
                     example: "Genre created successfully"
                   data:
-                    $ref: '#/components/schemas/Genre'
-        '400':
+                    $ref: "#/components/schemas/Genre"
+        "400":
           description: Validation error
-        '401':
+        "401":
           description: Authentication required
 
   /genres/{id}:
@@ -302,7 +306,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -316,10 +320,10 @@ paths:
                     type: string
                     example: "Genre retrieved successfully"
                   data:
-                    $ref: '#/components/schemas/Genre'
-        '400':
+                    $ref: "#/components/schemas/Genre"
+        "400":
           description: Invalid ID format
-        '404':
+        "404":
           description: Genre not found
 
     put:
@@ -341,15 +345,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GenreInput'
+              $ref: "#/components/schemas/GenreInput"
       responses:
-        '200':
+        "200":
           description: Genre updated successfully
-        '400':
+        "400":
           description: Validation error
-        '401':
+        "401":
           description: Authentication required
-        '404':
+        "404":
           description: Genre not found
 
     delete:
@@ -367,11 +371,11 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Genre deleted successfully
-        '401':
+        "401":
           description: Authentication required
-        '404':
+        "404":
           description: Genre not found
 
   /artists:
@@ -394,7 +398,7 @@ paths:
             type: integer
             default: 10
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -410,7 +414,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Artist'
+                      $ref: "#/components/schemas/Artist"
                   pagination:
                     type: object
 
@@ -426,13 +430,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ArtistInput'
+              $ref: "#/components/schemas/ArtistInput"
       responses:
-        '201':
+        "201":
           description: Artist created successfully
-        '400':
+        "400":
           description: Validation error
-        '401':
+        "401":
           description: Authentication required
 
   /artists/{id}:
@@ -449,7 +453,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -463,10 +467,10 @@ paths:
                     type: string
                     example: "Artist retrieved successfully"
                   data:
-                    $ref: '#/components/schemas/Artist'
-        '400':
+                    $ref: "#/components/schemas/Artist"
+        "400":
           description: Invalid ID format
-        '404':
+        "404":
           description: Artist not found
 
     put:
@@ -488,15 +492,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ArtistInput'
+              $ref: "#/components/schemas/ArtistInput"
       responses:
-        '200':
+        "200":
           description: Artist updated successfully
-        '400':
+        "400":
           description: Validation error
-        '401':
+        "401":
           description: Authentication required
-        '404':
+        "404":
           description: Artist not found
 
     delete:
@@ -514,9 +518,398 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Artist deleted successfully
-        '401':
+        "401":
           description: Authentication required
-        '404':
+        "404":
           description: Artist not found
+
+  /albums:
+    get:
+      summary: Get all albums
+      description: Retrieve a list of all albums with pagination
+      tags:
+        - Albums
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Albums retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      type: object
+        "500":
+          description: Server error
+
+    post:
+      summary: Create a new album
+      description: Create a new album (requires authentication)
+      tags:
+        - Albums
+      security:
+        - Auth0: [openid]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Test Album"
+                artist:
+                  type: string
+                  example: "Test Artist"
+                releaseYear:
+                  type: integer
+                  example: 2024
+                genre:
+                  type: string
+                  example: "Rock"
+                label:
+                  type: string
+                  example: "Test Records"
+                trackCount:
+                  type: integer
+                  example: 10
+                duration:
+                  type: integer
+                  example: 3600
+      responses:
+        "201":
+          description: Album created successfully
+        "400":
+          description: Validation error
+        "401":
+          description: Authentication required
+
+  /albums/{id}:
+    get:
+      summary: Get album by ID
+      description: Retrieve a specific album by its ID
+      tags:
+        - Albums
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Album ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+        "400":
+          description: Invalid ID format
+        "404":
+          description: Album not found
+
+    put:
+      summary: Update album
+      description: Update an existing album (requires authentication)
+      tags:
+        - Albums
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Album ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Album updated successfully
+        "400":
+          description: Validation error
+        "401":
+          description: Authentication required
+        "404":
+          description: Album not found
+
+    delete:
+      summary: Delete album
+      description: Delete an album (requires authentication)
+      tags:
+        - Albums
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Album ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Album deleted successfully
+        "401":
+          description: Authentication required
+        "404":
+          description: Album not found
+
+  /labels:
+    get:
+      summary: Get all labels
+      description: Retrieve a list of all record labels
+      tags:
+        - Labels
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Labels retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      type: object
+
+    post:
+      summary: Create a new label
+      description: Create a new record label (requires authentication)
+      tags:
+        - Labels
+      security:
+        - Auth0: [openid]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Test Records"
+                founded:
+                  type: integer
+                  example: 2020
+                country:
+                  type: string
+                  example: "USA"
+      responses:
+        "201":
+          description: Label created successfully
+        "400":
+          description: Validation error  
+        "401":
+          description: Authentication required
+
+  /labels/{id}:
+    get:
+      summary: Get label by ID
+      tags:
+        - Labels
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+        "404":
+          description: Label not found
+
+    put:
+      summary: Update label
+      tags:
+        - Labels
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Label updated successfully
+        "401":
+          description: Authentication required
+
+    delete:
+      summary: Delete label
+      tags:
+        - Labels
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Label deleted successfully
+        "401":
+          description: Authentication required
+
+  /reviews:
+    get:
+      summary: Get all reviews
+      description: Retrieve a list of all reviews
+      tags:
+        - Reviews
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Reviews retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      type: object
+
+    post:
+      summary: Create a new review
+      description: Create a new review (requires authentication)
+      tags:
+        - Reviews
+      security:
+        - Auth0: [openid]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                albumId:
+                  type: string
+                  example: "album123"
+                rating:
+                  type: integer
+                  example: 5
+                reviewText:
+                  type: string
+                  example: "Amazing album!"
+                reviewer:
+                  type: string
+                  example: "Music Critic"
+      responses:
+        "201":
+          description: Review created successfully
+        "400":
+          description: Validation error
+        "401":
+          description: Authentication required
+
+  /reviews/{id}:
+    get:
+      summary: Get review by ID
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+        "404":
+          description: Review not found
+
+    put:
+      summary: Update review
+      tags:
+        - Reviews
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Review updated successfully
+        "401":
+          description: Authentication required
+
+    delete:
+      summary: Delete review
+      tags:
+        - Reviews
+      security:
+        - Auth0: [openid]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Review deleted successfully
+        "401":
+          description: Authentication required
