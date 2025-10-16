@@ -62,8 +62,7 @@ const getArtistById = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Artist retrieved successfully',
-      data: result.artists,
-      pagination: result.pagination
+      data: result
     });
   } catch (error) {
     
