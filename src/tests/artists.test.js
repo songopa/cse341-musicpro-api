@@ -30,7 +30,7 @@ describe('GET /artists/:id', () => {
     test('should return an artist by ID', async () => {
         const artists = await db.collection('artists').find().toArray();
         if (artists.length === 0) return; // Skip if no artists
-        const artistId = artists.data[0]._id.toString();
+        const artistId = artists[0]._id.toString();
         console.log(artistId)
         const res = await request(app).get(`/artists/${artistId}`);
         expect(res.statusCode).toBe(200);
