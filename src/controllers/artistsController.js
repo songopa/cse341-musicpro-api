@@ -62,23 +62,23 @@ const getArtistById = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Artist retrieved successfully',
-      data: result
+      data: result.artists,
+      pagination: result.pagination
     });
   } catch (error) {
-    console.error('Error in getArtistById:', error);
     
-    if (error.message.includes('Invalid artist ID format')) {
+    if (error.message.includes('Invalid ID format')) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid artist ID format',
+        message: 'Invalid ID format',
         error: error.message
       });
     }
     
-    if (error.message.includes('Artist not found')) {
+    if (error.message.includes('Not found')) {
       return res.status(404).json({
         success: false,
-        message: 'Artist not found',
+        message: 'Not found',
         error: error.message
       });
     }

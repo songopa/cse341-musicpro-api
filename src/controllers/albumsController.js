@@ -1,11 +1,32 @@
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/db');
+const Album = require('../models/Album')
 
 exports.getAll = async (req, res, next) => {
     try {
-        const db = getDb();
-        const items = await db.collection('albums').find().limit(100).toArray();
-        res.json(items);
+        // Build filters from query parameters
+        const filters = {};
+        if (req.query.name) filters.name = req.query.name;
+        if (req.query.country) filters.country = req.query.country;
+        if (req.query.genre) filters.genre = req.query.genre;
+        if (req.query.isActive !== undefined) filters.isActive = req.query.isActive === 'true';
+
+        // Build options
+        const options = {
+            page: req.query.page,
+            limit: req.query.limit,
+            sortBy: req.query.sortBy,
+            sortOrder: req.query.sortOrder
+        };
+
+        const album = new Album()
+        const result = await album.findAll(filters, options);
+        res.status(200).json({
+            success: true,
+            message: 'Albums retrieved successfully',
+            data: result.albums,
+            pagination: result.pagination
+        });
     } catch (err) {
         next(err);
     }
@@ -13,12 +34,37 @@ exports.getAll = async (req, res, next) => {
 
 exports.getById = async (req, res, next) => {
     try {
-        const db = getDb();
-        const item = await db.collection('albums').findOne({ _id: new ObjectId(req.params.id) });
-        if (!item) return res.status(404).json({ message: 'Not found' });
-        res.json(item);
-    } catch (err) {
-        next(err);
+        const album = new Album()
+        const result = await album.findById(req.params.id);
+        if (!result) return res.status(404).json({ message: 'Not found' });
+        res.status(200).json({
+            success: true,
+            message: 'Album retrieved successfully',
+            data: result
+        });
+    } catch (error) {
+
+        if (error.message.includes('Invalid ID format')) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid ID format',
+                error: error.message
+            });
+        }
+
+        if (error.message.includes('Not found')) {
+            return res.status(404).json({
+                success: false,
+                message: 'Not found',
+                error: error.message
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message
+        });
     }
 };
 

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 let db;
+let client;
 
 async function connectToDb() {
     if (db) return db;
@@ -8,7 +9,7 @@ async function connectToDb() {
     if (!uri || typeof uri !== 'string') {
         throw new Error('MONGODB_URI is not set or invalid. Please set MONGODB_URI in your environment.');
     }
-    const client = new MongoClient(uri);
+    client = new MongoClient(uri);
     await client.connect();
     const dbName = process.env.MONGODB_NAME || undefined;
     db = dbName ? client.db(dbName) : client.db();
@@ -21,4 +22,13 @@ function getDb() {
     return db;
 }
 
-module.exports = { connectToDb, getDb };
+async function closeDb() {
+    if (client) {
+        await client.close();
+        client = null;
+        db = null;
+        console.log('MongoDB connection closed');
+    }
+}
+
+module.exports = { connectToDb, getDb, closeDb };

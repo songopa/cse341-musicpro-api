@@ -33,8 +33,12 @@ const validateLabelData = (label) => {
 exports.getAll = async (req, res, next) => {
     try {
         const db = getDb();
-        const items = await db.collection(COLLECTION_NAME).find().toArray();
-        res.json(items);
+        const result = await db.collection(COLLECTION_NAME).find().toArray();
+        res.status(200).json({
+            success: true,
+            message: 'Labels retrieved successfully',
+            data: result
+        });
     } catch (err) {
         next(err);
     }
@@ -42,12 +46,24 @@ exports.getAll = async (req, res, next) => {
 
 exports.getById = async (req, res, next) => {
     try {
+        if (!ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Bad Request',
+                message: 'Invalid ID format'
+            });
+        }
+
         const db = getDb();
         const item = await db.collection(COLLECTION_NAME).findOne({ _id: new ObjectId(req.params.id) });
         
         if (!item) return res.status(404).json({ message: 'Record Label not found' }); 
         
-        res.json(item);
+        res.status(200).json({
+            success: true,
+            message: 'Labal retrieved successfully',
+            data: item
+        });
     } catch (err) {
         next(err);
     }

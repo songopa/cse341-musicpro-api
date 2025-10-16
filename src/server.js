@@ -40,7 +40,10 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Only start listening when not running tests. Tests should import the app and use Supertest.
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {

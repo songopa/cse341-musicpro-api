@@ -113,28 +113,30 @@ class Album {
             const albums = await collection.find(query).sort(sort).skip(skip).limit(limit).toArray();
             const total = await collection.countDocuments(query);
             return {
-                success: true,
                 albums,
                 pagination: { currentPage: page, pageSize: limit, total: total, totalPages: Math.ceil(total / limit) }
             };
         } catch (error) {
-            return { success: false, errors: [error.message] };
+            throw new Error(error.message);
         }
     }
     /**
      * Find album by ID
      */
-    async findById(albumId) {
+    async findById(id) {
         try {
+            if (!ObjectId.isValid(id)) {
+                throw new Error('Invalid ID format', 400);
+            }
             const collection = this.getCollection();
             
-            const album = await collection.findOne({ _id: new ObjectId(albumId) });
+            const album = await collection.findOne({ _id: new ObjectId(id) });
             if (!album) {
-                return { success: false, errors: ['Album not found'] };
+               throw new Error ('Not found', 404);
             }
-            return { success: true, album };
+            return album;
         } catch (error) {
-            return { success: false, errors: [error.message] };
+            throw new Error(error.message);
         }
     }
     /**

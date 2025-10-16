@@ -103,7 +103,6 @@ const getGenreById = async (req, res) => {
       data: genre
     });
   } catch (error) {
-    console.error('Error fetching genre:', error);
     res.status(500).json({
       success: false,
       error: 'Internal server error',

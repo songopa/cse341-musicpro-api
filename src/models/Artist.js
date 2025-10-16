@@ -203,19 +203,19 @@ class Artist {
   async findById(id) {
     try {
       if (!ObjectId.isValid(id)) {
-        throw new Error('Invalid artist ID format');
+        throw new Error('Invalid ID format', 400);
       }
 
       const collection = this.getCollection();
       const artist = await collection.findOne({ _id: new ObjectId(id) });
 
-      if (!artist) {
-        throw new Error('Artist not found');
+      if (!artist || artist == null) {
+        throw new Error('Not found', 404);
       }
 
       return artist;
     } catch (error) {
-      throw new Error(`Failed to fetch artist: ${error.message}`);
+      throw new Error(error.message)
     }
   }
 
